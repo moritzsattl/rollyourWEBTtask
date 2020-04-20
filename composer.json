@@ -1,0 +1,16 @@
+{
+    "name": "moritzsattl/rollyourwebttask",
+    "description": "Art Locator - A consortium of museums has contacted you to create a web app which allows to store information on which portrait is located at which venue. (e.g.: Mona Lisa at the Louvre). It is important to be able to store, retrieve and sort the information.",
+    "type": "project",
+    "require": {
+        "doctrine/dbal": "^2.10",
+        "typo3fluid/fluid": "^2.6"
+    },
+    "license": "GPL",
+    "authors": [
+        {
+            "name": "Sattlegger Moritz",
+            "email": "6323@htl.rennweg.at"
+        }
+    ]
+}
