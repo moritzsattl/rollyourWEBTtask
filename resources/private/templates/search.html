@@ -1,0 +1,44 @@
+<html lang="en" xmlns:f="http://typo3.org/ns/TYPO3/Fluid/ViewHelpers">
+<f:layout name="default"/>
+<f:section name="searchbar">
+
+    <div class="row">
+        <div class="col">
+            <form id="searchform" method="GET" name="search">
+                <input id="search" class="form-control" type="text" name="search"
+                       placeholder="Search for artists, artpieces or museums">
+            </form>
+        </div>
+        <div class="col-md-auto btn-group btn-group-toggle" data-toggle="buttons">
+            <label class="btn btn-info">
+                <input type="radio" name="sort" value="asc" class="sort" autocomplete="off"> A - Z
+            </label>
+            <label class="btn btn-info">
+                <input type="radio" name="sort" value="desc" class="sort" autocomplete="off"> Z - A
+            </label>
+        </div>
+        <div class="col-md-auto">
+            <button type="button" class="btn btn-info" name="xml" value="yes">XML</button>
+            <button type="button" class="btn btn-info" name="store" value="yes">STORE</button>
+        </div>
+    </div>
+
+</f:section>
+<f:section name="artpieces">
+    <f:for each="{artpieces}" as="artpiece">
+        <f:render partial="artwork" arguments="{art: artpiece}"/>
+    </f:for>
+</f:section>
+<f:section name="script">
+    <script>
+        console.log("HALLO");
+        console.log(document.getElementsByClassName('sort')[0].nodeValue);
+        console.log(document.getElementsByClassName('sort')[0].nodeName);
+        console.log(document.getElementsByClassName('sort')[0].nodeType);
+        document.getElementsByClassName('sort')[0].addEventListener('click', function () {
+
+            console.log('Trigger');
+        });
+    </script>
+</f:section>
+</html>
