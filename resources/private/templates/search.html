@@ -1,8 +1,13 @@
 <html lang="en" xmlns:f="http://typo3.org/ns/TYPO3/Fluid/ViewHelpers">
 <f:layout name="default"/>
 <f:section name="searchbar">
+    <style>
+        div#searchbar div{
+            margin-bottom: 5px;
+        }
+    </style>
 
-    <div class="row">
+    <div class="row" id="searchbar">
         <div class="col">
             <form id="searchform" method="GET" name="search">
                 <input id="search" class="form-control" type="text" name="search"
@@ -18,26 +23,38 @@
             </label>
         </div>
         <div class="col-md-auto">
-            <button type="button" class="btn btn-info" name="xml" value="yes">XML</button>
+            <button type="button" class="xml btn btn-info" name="xml" value="yes">XML</button>
             <button type="button" class="btn btn-info" name="store" value="yes">STORE</button>
         </div>
     </div>
 
 </f:section>
 <f:section name="artpieces">
-    <f:for each="{artpieces}" as="artpiece">
-        <f:render partial="artwork" arguments="{art: artpiece}"/>
-    </f:for>
+    <div class="container">
+        <div class="row">
+            <f:for each="{artpieces}" as="artpiece">
+                <f:render partial="artwork" arguments="{art: artpiece}"/>
+            </f:for>
+        </div>
+    </div>
 </f:section>
 <f:section name="script">
     <script>
         console.log("HALLO");
-        console.log(document.getElementsByClassName('sort')[0].nodeValue);
-        console.log(document.getElementsByClassName('sort')[0].nodeName);
-        console.log(document.getElementsByClassName('sort')[0].nodeType);
-        document.getElementsByClassName('sort')[0].addEventListener('click', function () {
+        document.querySelectorAll('.sort').forEach((element) => {
+            console.log(element);
+            element.addEventListener('change', function () {
 
-            console.log('Trigger');
+                console.log('Trigger');
+            });
+        });
+
+        document.querySelectorAll('.xml').forEach((element) => {
+            console.log(element);
+            element.addEventListener('click', function () {
+
+                console.log('Trigger');
+            });
         });
     </script>
 </f:section>

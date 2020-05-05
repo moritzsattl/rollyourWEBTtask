@@ -1,0 +1,38 @@
+img.img {
+    transition: all .6s ease-in-out;
+    transform: scale(1);
+
+}
+
+img.img:hover {
+    opacity: 90%;
+    transition: all .6s ease-in-out;
+    transform: scale(1.05);
+}
+
+div#picture {
+    overflow: hidden;
+
+}
+
+div#artname {
+    margin-top: -10px;
+    font-variant: all-small-caps;
+    font-size: 1.5em;
+}
+
+div#artinfo {
+    margin-top: -13px;
+    padding-left: 5px;
+    font-variant: all-small-caps;
+    font-size: 1em;
+    color: dimgrey;
+}
+
+div.artcontainer {
+    margin-bottom: 20px;
+}
+
+div#text {
+    z-index: 10;
+}
