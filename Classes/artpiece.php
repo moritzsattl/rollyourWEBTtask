@@ -10,7 +10,7 @@ class artpiece{
     private $FK_PK_MUSEUM;
 
     /**
-     * artpieces constructor.
+     * artpieces.dtd constructor.
      * @param $PK_ARTPIECE
      * @param $NAME
      * @param $YEAR

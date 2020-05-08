@@ -1,0 +1,56 @@
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="artlocator">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="artpiece" maxOccurs="unbounded" minOccurs="0">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element type="xs:byte" name="PK_ARTPIECE"/>
+              <xs:element type="xs:string" name="ARTNAME"/>
+              <xs:element type="xs:string" name="YEAR"/>
+              <xs:element type="xs:string" name="ARTPICTURE"/>
+              <xs:element type="xs:string" name="DESCRIPTION"/>
+              <xs:element name="museum">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element type="xs:byte" name="PK_MUSEUM"/>
+                    <xs:element type="xs:string" name="MNAME"/>
+                    <xs:element type="xs:string" name="LOGO"/>
+                    <xs:element type="xs:int" name="POSTALCODE"/>
+                    <xs:element type="xs:string" name="PLACE"/>
+                    <xs:element type="xs:string" name="STREET"/>
+                    <xs:element type="xs:string" name="HOUSENUMBER"/>
+                    <xs:element type="xs:string" name="COUNTRY"/>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="artist">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element type="xs:byte" name="PK_ARTIST"/>
+                    <xs:element type="xs:string" name="ANAME"/>
+                    <xs:element type="xs:string" name="APICTURE"/>
+                    <xs:element type="xs:date" name="BIRTHDATE"/>
+                    <xs:element type="xs:date" name="DEATHDATE"/>
+                    <xs:element type="xs:string" name="BIOGRAPHY"/>
+                    <xs:element name="epoch">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element type="xs:byte" name="PK_EPOCH"/>
+                          <xs:element type="xs:string" name="ENAME"/>
+                          <xs:element type="xs:short" name="FROM"/>
+                          <xs:element type="xs:short" name="TO"/>
+                          <xs:element type="xs:string" name="DESCRIPTION"/>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

@@ -1,11 +1,6 @@
 <html lang="en" xmlns:f="http://typo3.org/ns/TYPO3/Fluid/ViewHelpers">
 <f:layout name="default"/>
 <f:section name="searchbar">
-    <style>
-        div#searchbar div{
-            margin-bottom: 5px;
-        }
-    </style>
 
     <div class="row" id="searchbar">
         <div class="col">
@@ -14,24 +9,25 @@
                        placeholder="Search for artists, artpieces or museums">
             </form>
         </div>
-        <div class="col-md-auto btn-group btn-group-toggle" data-toggle="buttons">
-            <label class="btn btn-info">
-                <input type="radio" name="sort" value="asc" class="sort" autocomplete="off"> A - Z
-            </label>
-            <label class="btn btn-info">
-                <input type="radio" name="sort" value="desc" class="sort" autocomplete="off"> Z - A
-            </label>
+        <div id="selectpicker" class="col-md-auto">
+            <select class="selectpicker show-tick form-control" title="Filter by Location" data-live-search="true">
+                <f:for each="{museums}" as="museum">
+                    <option value="{museum.MNAME}">{museum.MNAME}</option>
+                </f:for>
+            </select>
         </div>
+
         <div class="col-md-auto">
-            <button type="button" class="xml btn btn-info" name="xml" value="yes">XML</button>
-            <button type="button" class="btn btn-info" name="store" value="yes">STORE</button>
+            <button type="button" class="sort btn btn-info" name="sort" value="sort"> A - Z</button>
+            <button type="button" class="xml btn btn-info" name="xml" value="xml">XML</button>
+            <button type="button" class="btn btn-info" name="store" value="store">STORE</button>
         </div>
     </div>
 
 </f:section>
 <f:section name="artpieces">
     <div class="container">
-        <div class="row">
+        <div class="art row">
             <f:for each="{artpieces}" as="artpiece">
                 <f:render partial="artwork" arguments="{art: artpiece}"/>
             </f:for>
@@ -40,20 +36,67 @@
 </f:section>
 <f:section name="script">
     <script>
-        console.log("HALLO");
-        document.querySelectorAll('.sort').forEach((element) => {
-            console.log(element);
+        let searchterm = "{search}";
+        document.querySelectorAll('.selectpicker').forEach((element) => {
             element.addEventListener('change', function () {
+                console.log(element.value);
+                let info = document.querySelector('#noartinfo');
+                let toSort = document.querySelector('.art').children;
+                toSort = Array.prototype.slice.call(toSort, 0);
+                toSort.forEach(node => node.style.display = 'block');
+                info ? document.querySelector('.art').removeChild(info) : "";
 
-                console.log('Trigger');
-            });
+                toSort.filter(node => element.value !== node.dataset.mname).forEach(node => node.style.display = 'none');
+                let counter = 0;
+                toSort.forEach(node => node.style.display === 'block' ? counter++ : "");
+                let infonode = document.createElement('div');
+                infonode.id = "noartinfo";
+                infonode.className = "col-md-auto";
+                infonode.innerHTML = "<h3>Keine Bilder gefunden!</h3>";
+                (counter === 0) ? document.querySelector('.art').appendChild(infonode) : "";
+            })
         });
 
-        document.querySelectorAll('.xml').forEach((element) => {
+        let sortdirection = false;
+        document.querySelectorAll('.sort').forEach((element) => {
             console.log(element);
             element.addEventListener('click', function () {
 
-                console.log('Trigger');
+                let toSort = document.querySelector('.art').children;
+                toSort = Array.prototype.slice.call(toSort, 0);
+                if (sortdirection) {
+                    toSort.sort((a, b) => a.dataset.artname < b.dataset.artname ? 1 : -1).map(node => document.querySelector('.art').appendChild(node));
+                    element.innerHTML = "A - Z";
+                } else {
+                    toSort.sort((a, b) => a.dataset.artname > b.dataset.artname ? 1 : -1).map(node => document.querySelector('.art').appendChild(node));
+                    element.innerHTML = "Z - A";
+                }
+                sortdirection = !sortdirection;
+
+            });
+        });
+        console.log(searchterm);
+        document.querySelectorAll('.xml').forEach((element) => {
+            console.log(element);
+            element.addEventListener('click', function () {
+                console.log("Trigger");
+                let xhr = new XMLHttpRequest();
+                let sort = document.querySelector('.sort').innerHTML;
+                let museum = document.querySelector('.selectpicker').value;
+                xhr.open("GET", "index.php?format=JSON&sort=" + sort + "&filter=" + museum+"&searchterm="+searchterm, true);
+                xhr.onreadystatechange = function () {
+                    if(xhr.readyState === XMLHttpRequest.DONE){
+                       let a = document.createElement('a');
+                        a.setAttribute('href', "resources/public/xml/artpieces.xml");
+                        a.setAttribute('download', "artpieces");
+
+                        let aj = $(a);
+                        aj.appendTo('body');
+                        aj[0].click();
+                        aj.remove();
+                    }
+                };
+                xhr.send();
             });
         });
     </script>
