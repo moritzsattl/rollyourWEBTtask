@@ -47,8 +47,6 @@ if(isset($_GET['search'])){
     $view->assignMultiple($variables);
 
     echo $view->render('search');
-}else{
-    echo $view->render('home');
 }
 function console_log( $data ){
     echo '<script>';
@@ -119,6 +117,57 @@ if(isset($_REQUEST['format']) && $_REQUEST['format'] == 'JSON'){
     $xml->saveXML("resources/public/xml/artpieces.xml");
 
     die;
+
+}
+
+if(isset($_GET['add'])){
+    $sql = "SELECT * FROM museums ORDER BY MNAME;";
+    $stmt = $conn->prepare($sql);
+    $stmt->execute();
+    $museums = $stmt->fetchAll();
+
+    $variables['museums'] = $museums;
+
+    $sql2 = "SELECT * FROM artists ORDER BY ANAME;";
+    $stmt2 = $conn->prepare($sql2);
+    $stmt2->execute();
+    $artists = $stmt2->fetchAll();
+
+    $variables['artists'] = $artists;
+
+    $view->assignMultiple($variables);
+
+    echo $view->render('add');
+
+}
+
+if(!isset($_GET['add']) && !isset($_GET['search'])){
+
+
+
+    echo $view->render('home');
+}
+if(isset($_GET['store'])){
+    console_log($_FILES['uploadPainting']);
+
+    $info = pathinfo($_FILES['uploadPainting']['name']);
+    $ext = $info['extension'];
+    $newname = $_POST['name'].".".$ext;
+    $path = 'resources/public/artworks/'.$newname;
+    $path = 'resources/public/artworks/'.$newname;
+    move_uploaded_file($_FILES['uploadPainting']['tmp_name'],$path);
+
+    $sql = "INSERT INTO artpieces (ARTNAME, ALT, YEAR, ARTPICTURE, DESCRIPTION, FK_PK_ARTIST, FK_PK_MUSEUM) VALUES (:name,:alt,:year,:path,:description,:artist,:museum)";
+    $stmt = $conn->prepare($sql);
+    $stmt->bindValue(':name',$_POST['name']);
+    $stmt->bindValue(':year',$_POST['year']);
+    $stmt->bindValue(':alt',$_POST['alt']);
+    $stmt->bindValue(':path',$path);
+    $stmt->bindValue(':description',$_POST['description']);
+    $stmt->bindValue(':artist',$_POST['artist'],PDO::PARAM_INT);
+    $stmt->bindValue(':museum',$_POST['museum'],PDO::PARAM_INT);
+    $stmt->execute();
+
 
 }
 

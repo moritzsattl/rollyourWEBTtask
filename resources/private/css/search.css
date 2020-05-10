@@ -1,3 +1,8 @@
+div.searchcontainer {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
 input#search {
     border: darkslateblue 2px solid;
 }

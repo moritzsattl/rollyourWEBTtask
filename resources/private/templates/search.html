@@ -1,26 +1,27 @@
 <html lang="en" xmlns:f="http://typo3.org/ns/TYPO3/Fluid/ViewHelpers">
 <f:layout name="default"/>
 <f:section name="searchbar">
+    <div class="searchcontainer container">
+        <div class="row" id="searchbar">
+            <div class="col">
+                <form id="searchform" method="GET" name="search">
+                    <input id="search" class="form-control" type="text" name="search"
+                           placeholder="Search for artists, artpieces or museums" alt="Search for artists, artpieces or museums" required>
+                </form>
+            </div>
+            <div id="selectpicker" class="col-md-auto">
+                <select aria-label="Filter by Location" class="selectpicker show-tick form-control" title="Filter by Location" data-live-search="true">
+                    <f:for each="{museums}" as="museum">
+                        <option aria-labelledby="{museum.MNAME}" value="{museum.MNAME}">{museum.MNAME}</option>
+                    </f:for>
+                </select>
+            </div>
 
-    <div class="row" id="searchbar">
-        <div class="col">
-            <form id="searchform" method="GET" name="search">
-                <input id="search" class="form-control" type="text" name="search"
-                       placeholder="Search for artists, artpieces or museums">
-            </form>
-        </div>
-        <div id="selectpicker" class="col-md-auto">
-            <select class="selectpicker show-tick form-control" title="Filter by Location" data-live-search="true">
-                <f:for each="{museums}" as="museum">
-                    <option value="{museum.MNAME}">{museum.MNAME}</option>
-                </f:for>
-            </select>
-        </div>
-
-        <div class="col-md-auto">
-            <button type="button" class="sort btn btn-info" name="sort" value="sort"> A - Z</button>
-            <button type="button" class="xml btn btn-info" name="xml" value="xml">XML</button>
-            <button type="button" class="btn btn-info" name="store" value="store">STORE</button>
+            <div class="col-md-auto">
+                <button type="button" class="sort btn btn-info" name="sort" value="sort"> A - Z</button>
+                <button type="button" class="xml btn btn-info" name="xml" value="xml">GET XML</button>
+                <button type="button" class="add btn btn-info" name="store" value="store">ADD PAINTING</button>
+            </div>
         </div>
     </div>
 
@@ -83,10 +84,10 @@
                 let xhr = new XMLHttpRequest();
                 let sort = document.querySelector('.sort').innerHTML;
                 let museum = document.querySelector('.selectpicker').value;
-                xhr.open("GET", "index.php?format=JSON&sort=" + sort + "&filter=" + museum+"&searchterm="+searchterm, true);
+                xhr.open("GET", "index.php?format=JSON&sort=" + sort + "&filter=" + museum + "&searchterm=" + searchterm, true);
                 xhr.onreadystatechange = function () {
-                    if(xhr.readyState === XMLHttpRequest.DONE){
-                       let a = document.createElement('a');
+                    if (xhr.readyState === XMLHttpRequest.DONE) {
+                        let a = document.createElement('a');
                         a.setAttribute('href', "resources/public/xml/artpieces.xml");
                         a.setAttribute('download', "artpieces");
 
@@ -99,6 +100,42 @@
                 xhr.send();
             });
         });
+
+        document.querySelectorAll('.add').forEach((element) => {
+
+            element.addEventListener('click', function () {
+                history.replaceState && history.replaceState(
+                    null, '', location.pathname + location.search.replace(/[\?&]search=[^&]+/, '').replace(/^&/, '?') + location.hash
+                );
+                insertParam('add','painting');
+            })
+        });
+
+        function insertParam(key, value) {
+            key = escape(key); value = escape(value);
+
+            let kvp = document.location.search.substr(1).split('&');
+            if (kvp == '') {
+                document.location.search = '?' + key + '=' + value;
+            }
+            else {
+
+                var i = kvp.length; var x; while (i--) {
+                    x = kvp[i].split('=');
+
+                    if (x[0] == key) {
+                        x[1] = value;
+                        kvp[i] = x.join('=');
+                        break;
+                    }
+                }
+
+                if (i < 0) { kvp[kvp.length] = [key, value].join('='); }
+
+                //this will reload the page, it's likely better to store this until finished
+                document.location.search = kvp.join('&');
+            }
+        }
     </script>
 </f:section>
 </html>

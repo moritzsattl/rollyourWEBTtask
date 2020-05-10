@@ -6,7 +6,8 @@
         "doctrine/dbal": "^2.10",
         "typo3fluid/fluid": "^2.6",
       "ext-dom": "*",
-        "ext-simplexml": "*"
+        "ext-simplexml": "*",
+      "ext-pdo": "*"
     },
     "license": "GPL",
     "authors": [

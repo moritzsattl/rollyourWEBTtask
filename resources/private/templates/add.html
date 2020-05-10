@@ -1,0 +1,132 @@
+<html lang="en" xmlns:f="http://typo3.org/ns/TYPO3/Fluid/ViewHelpers">
+<f:layout name="add"/>
+
+<f:section name="menu">
+    <div class="searchcontainer">
+        <div class="container">
+            <div class="row" id="searchbar">
+                <div class="col">
+                    <form id="searchform" method="GET" name="search">
+                        <input id="search" class="form-control" type="text" name="search"
+                               placeholder="Search for artists, artpieces or museums" alt="Search for artists, artpieces or museums" required>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</f:section>
+<f:section name="add">
+    <div id="add" class="container">
+        <form action="index.php?store=painting" method="POST" enctype="multipart/form-data">
+            <h4>Add Painting</h4>
+            <hr>
+            <div id="addpainting" class="row">
+                <div id="div-img-upload" class="col-12">
+                    <div class="form-group">
+                        <label>Upload Image</label>
+                        <div class="input-group">
+            <span class="input-group-btn">
+                <span class="btn btn-info btn-file">
+                    Browse <input name="uploadPainting" type="file" id="imgInp" required>
+                </span>
+            </span>
+                            <input type="text" class="form-control" readonly>
+                        </div>
+                        <img id='img-upload'/>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input id="name" name="name" class="form-control" type="text" placeholder="Mona Lisa" required>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="form-group">
+                        <label for="year">Year</label>
+                        <input id="year" name="year" type='number' class="form-control" placeholder="1960" required>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="form-group">
+                        <label for="alt">What is happening on the picture? (Explain to a blind person)</label>
+                        <textarea id="alt" name="alt" rows="1" class="form-control" required></textarea>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="form-group">
+                        <label for="description">Background Information (Full Description)</label>
+                        <textarea id="description" name="description" rows="4" class="form-control" required></textarea>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="form-group">
+                        <select id="artist" name="artist" class="selectpicker form-control" title="Artist" data-live-search="true" required>
+                            <f:for each="{artists}" as="artist">
+                                <option value="{artist.PK_ARTIST}">{artist.ANAME}</option>
+                            </f:for>
+
+                        </select>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="form-group">
+                        <select id="museum" name="museum" class="selectpicker form-control" title="Museum" data-live-search="true" required>
+                            <f:for each="{museums}" as="museum">
+                                <option value="{museum.PK_MUSEUM}">{museum.MNAME}</option>
+                            </f:for>
+
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-12">
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-success form-control">ADD PAINTING</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</f:section>
+<f:section name="script">
+    <script>
+
+        $(document).ready(function () {
+            $(document).on('change', '.btn-file :file', function () {
+                var input = $(this),
+                    label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+                input.trigger('fileselect', [label]);
+            });
+
+            $('.btn-file :file').on('fileselect', function (event, label) {
+
+                var input = $(this).parents('.input-group').find(':text'),
+                    log = label;
+
+                if (input.length) {
+                    input.val(log);
+                } else {
+                    if (log) alert(log);
+                }
+
+            });
+
+            function readURL(input) {
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+
+                    reader.onload = function (e) {
+                        $('#img-upload').attr('src', e.target.result);
+                    }
+
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
+
+            $("#imgInp").change(function () {
+                readURL(this);
+            });
+        });
+    </script>
+</f:section>
