@@ -179,7 +179,6 @@ if(isset($_GET['painting'])){
     $variables['painting'] = $painting;
     $view->assignMultiple($variables);
 
-
     echo $view->render('painting');
 }
 

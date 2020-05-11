@@ -34,15 +34,15 @@
         }
 
         div#artname {
-            margin-top: -10px;
             font-variant: all-small-caps;
-
+            font-size: 1.2em;
         }
 
         div.artinfo {
             text-align: right;
             font-variant: all-small-caps;
             color: dimgrey;
+            font-size: 1.2em;
         }
 
 
@@ -66,6 +66,7 @@
         }
         .headline{
             font-variant: all-small-caps;
+            font-size: 1.4em;
         }
     </style>
 </head>
@@ -91,10 +92,10 @@
         <img class="img img-fluid" alt="{painting.ALT}" src="{painting.ARTPICTURE}">
     </div>
     <div class="row">
-        <div class="col-5">
-            <div>{painting.ARTNAME} <span class="red">{painting.YEAR}</span></div>
+        <div class="col-6">
+            <div id="artname">{painting.ARTNAME} <span class="red">{painting.YEAR}</span></div>
         </div>
-        <div  class="artinfo col-7">
+        <div  class="artinfo col-6">
             <div><span>{painting.ANAME}</span> <span class="red">at</span> <span>{painting.MNAME}</span>
             </div>
         </div>
