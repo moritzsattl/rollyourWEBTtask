@@ -37,10 +37,17 @@
 </f:section>
 <f:section name="script">
     <script>
-        let searchterm = "{search}";
+
+        document.querySelectorAll('.link').forEach((element)=>{
+            element.addEventListener('click',function () {
+                console.log(element);
+
+                insertParam('painting',element.dataset.artname);
+            })
+        });
+
         document.querySelectorAll('.selectpicker').forEach((element) => {
             element.addEventListener('change', function () {
-                console.log(element.value);
                 let info = document.querySelector('#noartinfo');
                 let toSort = document.querySelector('.art').children;
                 toSort = Array.prototype.slice.call(toSort, 0);
@@ -60,7 +67,6 @@
 
         let sortdirection = false;
         document.querySelectorAll('.sort').forEach((element) => {
-            console.log(element);
             element.addEventListener('click', function () {
 
                 let toSort = document.querySelector('.art').children;
@@ -76,15 +82,14 @@
 
             });
         });
-        console.log(searchterm);
+        console.log("<f:format.raw>{search}</f:format.raw>");
         document.querySelectorAll('.xml').forEach((element) => {
             console.log(element);
             element.addEventListener('click', function () {
-                console.log("Trigger");
                 let xhr = new XMLHttpRequest();
                 let sort = document.querySelector('.sort').innerHTML;
                 let museum = document.querySelector('.selectpicker').value;
-                xhr.open("GET", "index.php?format=JSON&sort=" + sort + "&filter=" + museum + "&searchterm=" + searchterm, true);
+                xhr.open("GET", "index.php?format=JSON&sort=" + sort + "&filter=" + museum + "&searchterm=<f:format.raw>{search}</f:format.raw>", true);
                 xhr.onreadystatechange = function () {
                     if (xhr.readyState === XMLHttpRequest.DONE) {
                         let a = document.createElement('a');
@@ -104,9 +109,6 @@
         document.querySelectorAll('.add').forEach((element) => {
 
             element.addEventListener('click', function () {
-                history.replaceState && history.replaceState(
-                    null, '', location.pathname + location.search.replace(/[\?&]search=[^&]+/, '').replace(/^&/, '?') + location.hash
-                );
                 insertParam('add','painting');
             })
         });

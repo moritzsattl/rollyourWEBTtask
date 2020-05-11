@@ -5,6 +5,11 @@
     <div class="searchcontainer">
         <div class="container">
             <div class="row" id="searchbar">
+                <div class="col-auto">
+                    <button class="goback btn btn-info">
+                        BACK
+                    </button>
+                </div>
                 <div class="col">
                     <form id="searchform" method="GET" name="search">
                         <input id="search" class="form-control" type="text" name="search"
@@ -91,7 +96,11 @@
 </f:section>
 <f:section name="script">
     <script>
-
+        document.querySelectorAll('.goback').forEach((element)=>{
+           element.addEventListener('click',function () {
+               history.go(-1);
+           })
+        });
         $(document).ready(function () {
             $(document).on('change', '.btn-file :file', function () {
                 var input = $(this),
@@ -118,7 +127,7 @@
 
                     reader.onload = function (e) {
                         $('#img-upload').attr('src', e.target.result);
-                    }
+                    };
 
                     reader.readAsDataURL(input.files[0]);
                 }

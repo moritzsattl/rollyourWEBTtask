@@ -20,7 +20,7 @@ $conn = \Doctrine\DBAL\DriverManager::getConnection($connectionParams);
 
 
 
-if(isset($_GET['search'])){
+if(isset($_GET['search']) && !isset($_GET['painting']) && !isset($_GET['add'])){
     $sql = "SELECT * FROM artpieces INNER JOIN artists a on artpieces.FK_PK_ARTIST = a.PK_ARTIST INNER JOIN museums m on artpieces.FK_PK_MUSEUM = m.PK_MUSEUM WHERE artpieces.ARTNAME LIKE ? OR a.ANAME LIKE ? OR m.MNAME LIKE ?";
     $stmt = $conn->prepare($sql);
     $value = '%'.$_GET['search'].'%';
@@ -43,7 +43,6 @@ if(isset($_GET['search'])){
     $museums = $stmt2->fetchAll();
 
     $variables['museums'] = $museums;
-
     $view->assignMultiple($variables);
 
     echo $view->render('search');
@@ -141,7 +140,7 @@ if(isset($_GET['add'])){
 
 }
 
-if(!isset($_GET['add']) && !isset($_GET['search'])){
+if(!isset($_GET['add']) && !isset($_GET['search']) && !isset($_GET['painting'])){
 
 
 
@@ -169,6 +168,19 @@ if(isset($_GET['store'])){
     $stmt->execute();
 
 
+}
+if(isset($_GET['painting'])){
+
+    $sql = "SELECT * FROM artpieces INNER JOIN museums m on artpieces.FK_PK_MUSEUM = m.PK_MUSEUM INNER JOIN artists a on artpieces.FK_PK_ARTIST = a.PK_ARTIST INNER JOIN epochs e on a.FK_PK_EPOCH = e.PK_EPOCH WHERE artname = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bindValue(1,$_GET['painting']);
+    $stmt->execute();
+    $painting = $stmt->fetch();
+    $variables['painting'] = $painting;
+    $view->assignMultiple($variables);
+
+
+    echo $view->render('painting');
 }
 
 

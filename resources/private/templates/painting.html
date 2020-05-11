@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:f="http://typo3.org/ns/TYPO3/Fluid/ViewHelpers">
+
+
+<head>
+    <meta charset="UTF-8">
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+            integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+            integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+            integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+            crossorigin="anonymous"></script>
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+            integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"
+            integrity="sha384-6khuMg9gaYr5AxOqhkVIODVIvm9ynTT5J4V1cfthmT+emCG6yVmEZsRHdxlotUnm"
+            crossorigin="anonymous"></script>
+
+
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap" rel="stylesheet">
+
+    <link href="resources/private/css/search.css" rel="stylesheet">
+
+    <style>
+        * {
+            font-family: 'Roboto', sans-serif;
+        }
+
+        div#artname {
+            margin-top: -10px;
+            font-variant: all-small-caps;
+
+        }
+
+        div.artinfo {
+            text-align: right;
+            font-variant: all-small-caps;
+            color: dimgrey;
+        }
+
+
+        div#text {
+            z-index: 10;
+        }
+
+        img.img {
+            width: auto;
+            height: auto;
+            min-width: 100%;
+        }
+
+        .normaltext {
+            font-weight: lighter;
+            font-family: Arial;
+        }
+
+        .red {
+            color: red;
+        }
+        .headline{
+            font-variant: all-small-caps;
+        }
+    </style>
+</head>
+<body>
+<div class="searchcontainer container">
+    <div class="row" id="searchbar">
+        <div class="col-auto">
+            <button class="goback btn btn-info">
+                BACK
+            </button>
+        </div>
+        <div class="col">
+            <form id="searchform" method="GET" name="search">
+                <input id="search" class="form-control" type="text" name="search"
+                       placeholder="Search for artists, artpieces or museums"
+                       alt="Search for artists, artpieces or museums" required>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div id="picture">
+        <img class="img img-fluid" alt="{painting.ALT}" src="{painting.ARTPICTURE}">
+    </div>
+    <div class="row">
+        <div class="col-5">
+            <div>{painting.ARTNAME} <span class="red">{painting.YEAR}</span></div>
+        </div>
+        <div  class="artinfo col-7">
+            <div><span>{painting.ANAME}</span> <span class="red">at</span> <span>{painting.MNAME}</span>
+            </div>
+        </div>
+        <div class="artinfo col-12">
+            {painting.ENAME} <span class="red">{painting.FROM}-{painting.TO}</span>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <f:if condition="{painting.DESCRIPTION} > ''">
+            <div class="col-12">
+                <h5 class="headline">About the art</h5>
+                <p class="normaltext text-justify">
+                    <f:format.raw>{painting.DESCRIPTION}</f:format.raw>
+                </p>
+            </div>
+        </f:if>
+        <div class="col-12">
+            <h5 class="headline">About the artist</h5>
+            <p class="normaltext text-justify">
+                <f:format.raw>{painting.BIOGRAPHY}</f:format.raw>
+            </p>
+        </div>
+        <div class="col-12">
+            <h5 class="headline">Located at</h5>
+            <p class="normaltext text-justify">
+                <f:format.raw>{painting.MNAME}</f:format.raw>
+                <br>
+                {painting.POSTALCODE} {painting.PLACE}<br>
+                {painting.STREET} {painting.HOUSENUMBER} <br>
+                {painting.COUNTRY}
+            </p>
+        </div>
+    </div>
+</div>
+
+</body>
+<script>
+    document.querySelectorAll('.goback').forEach((element) => {
+        element.addEventListener('click', function () {
+            history.go(-1);
+        })
+    });
+</script>
+
+</html>
