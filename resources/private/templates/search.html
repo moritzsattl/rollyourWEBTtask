@@ -6,11 +6,13 @@
             <div class="col">
                 <form id="searchform" method="GET" name="search">
                     <input id="search" class="form-control" type="text" name="search"
-                           placeholder="Search for artists, artpieces or museums" alt="Search for artists, artpieces or museums" required>
+                           placeholder="Search for artists, artpieces or museums"
+                           alt="Search for artists, artpieces or museums" required>
                 </form>
             </div>
             <div id="selectpicker" class="col-md-auto">
-                <select aria-label="Filter by Location" class="selectpicker show-tick form-control" title="Filter by Location" data-live-search="true">
+                <select aria-label="Filter by Location" class="selectpicker show-tick form-control"
+                        title="Filter by Location" data-live-search="true">
                     <f:for each="{museums}" as="museum">
                         <option aria-labelledby="{museum.MNAME}" value="{museum.MNAME}">{museum.MNAME}</option>
                     </f:for>
@@ -27,7 +29,7 @@
 
 </f:section>
 <f:section name="artpieces">
-    <div class="container">
+    <div role="tablist" class="container">
         <div class="art row">
             <f:for each="{artpieces}" as="artpiece">
                 <f:render partial="artwork" arguments="{art: artpiece}"/>
@@ -38,13 +40,18 @@
 <f:section name="script">
     <script>
 
-        document.querySelectorAll('.link').forEach((element)=>{
-            element.addEventListener('click',function () {
+        document.querySelectorAll('.link').forEach((element) => {
+            element.addEventListener('click', function () {
                 console.log(element);
 
-                insertParam('painting',element.dataset.artname);
-            })
+                insertParam('painting', element.dataset.artname);
+            });
+            element.onkeypress = function (e) {
+                e.keyCode === 13 ? element.click():'';
+
+            }
         });
+
 
         document.querySelectorAll('.selectpicker').forEach((element) => {
             element.addEventListener('change', function () {
@@ -109,20 +116,22 @@
         document.querySelectorAll('.add').forEach((element) => {
 
             element.addEventListener('click', function () {
-                insertParam('add','painting');
+                insertParam('add', 'painting');
             })
         });
 
         function insertParam(key, value) {
-            key = escape(key); value = escape(value);
+            key = escape(key);
+            value = escape(value);
 
             let kvp = document.location.search.substr(1).split('&');
             if (kvp == '') {
                 document.location.search = '?' + key + '=' + value;
-            }
-            else {
+            } else {
 
-                var i = kvp.length; var x; while (i--) {
+                var i = kvp.length;
+                var x;
+                while (i--) {
                     x = kvp[i].split('=');
 
                     if (x[0] == key) {
@@ -132,7 +141,9 @@
                     }
                 }
 
-                if (i < 0) { kvp[kvp.length] = [key, value].join('='); }
+                if (i < 0) {
+                    kvp[kvp.length] = [key, value].join('=');
+                }
 
                 //this will reload the page, it's likely better to store this until finished
                 document.location.search = kvp.join('&');
